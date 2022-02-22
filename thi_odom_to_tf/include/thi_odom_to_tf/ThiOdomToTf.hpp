@@ -24,6 +24,7 @@ public:
     // RCLCPP_INFO(_logger, "------------------------------------------------------");
     // RCLCPP_INFO(_logger, "------------------------------------------------------");
 
+    _clock = this->get_clock();
     _tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
     _sub_odom = this->create_subscription<nav_msgs::msg::Odometry>("odom", 10, std::bind(&ThiOdomToTf::sub_odom_callback, this, std::placeholders::_1));
@@ -38,6 +39,7 @@ private: //fcn
     geometry_msgs::msg::TransformStamped t;
 
     t.header = msg->header;
+    t.header.stamp = _clock->now();
     t.child_frame_id = msg->child_frame_id;
 
     t.transform.translation.x = msg->pose.pose.position.x;
@@ -63,6 +65,8 @@ private:
   std::unique_ptr<tf2_ros::TransformBroadcaster> _tf_broadcaster;
   
   rclcpp::Logger _logger {rclcpp::get_logger("thi_odom_to_tf_node")};
+
+  rclcpp::Clock::SharedPtr _clock;
 };
 
 #endif  //THIODOMTOTF_H_
