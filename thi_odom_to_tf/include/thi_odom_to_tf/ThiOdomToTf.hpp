@@ -35,11 +35,11 @@ public:
 private: //fcn
   void sub_odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
   {
-    RCLCPP_INFO(_logger, "got odom");
+    // RCLCPP_INFO(_logger, "got odom");
     geometry_msgs::msg::TransformStamped t;
 
     t.header = msg->header;
-    t.header.stamp = _clock->now();
+    // t.header.stamp = _clock->now();
     t.child_frame_id = msg->child_frame_id;
 
     t.transform.translation.x = msg->pose.pose.position.x;
