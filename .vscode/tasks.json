@@ -21,6 +21,7 @@
       "description": "pkgs from this meta pkg",
       "options": [
         "thi_odom_to_tf",
+        "thi_tools",
         // "thi_move_launch",
       ]
     }
