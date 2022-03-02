@@ -70,7 +70,7 @@ class TimeDiffHandleTf(object):
 
   def hasData(self) -> bool:
     return self.got_data
-
+  
   def getTopic(self):
     return self.topic
 
