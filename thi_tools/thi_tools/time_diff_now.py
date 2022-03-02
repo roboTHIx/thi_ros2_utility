@@ -39,8 +39,9 @@ class TimeDiffHandleTf(object):
       now = self.parent.get_clock().now()
       tmp_diff_sec =  now.to_msg().sec - msg.transforms[i].header.stamp.sec
       tmp_diff_nsec = now.to_msg().nanosec - msg.transforms[i].header.stamp.nanosec
-      # print(msg.transforms[i].header.stamp.sec)
-      # print(now.to_msg().sec)
+      print(msg.transforms[i].header.frame_id, '------------')
+      print(msg.transforms[i].header.stamp)
+      print(now.to_msg())
 
       diff_s = tmp_diff_sec + tmp_diff_nsec/1000000000
       # print(len(self.data))
@@ -163,7 +164,9 @@ class TimeDiffNowNode(Node):
   def timer_callback(self):
     # self.get_logger().info('hans')
     invalid_idx = []
-    print("len handles: ", len(self.sub_handles))
+    # print("len handles: ", len(self.sub_handles))
+    print('--')
+   
     for i in range(len(self.sub_handles)):
       if not self.sub_handles[i].isValid():
         invalid_idx.append(i)
@@ -174,12 +177,12 @@ class TimeDiffNowNode(Node):
       if self.sub_handles[i].hasData():
         time_diff = self.sub_handles[i].getTimeDiff()
       print(self.sub_handles[i].getTopic(), ": ", time_diff, " s")
-    print('--')
     for i in range(len(invalid_idx)):
       print('topic', self.sub_handles[invalid_idx[i]].getTopic() ,'is not valid -> this topic will be removed')
       self.sub_handles[invalid_idx[i]].clear()
       del self.sub_handles[invalid_idx[i]]
 
+    # print('dings')
     if hasattr(self, 'tf_handle'):
       #print tf time diff
       self.tf_handle.printTfMessage()
@@ -189,7 +192,7 @@ class TimeDiffNowNode(Node):
       print("none of the given topics is valid.. will exit...")
       # rclpy.shutdown()
       exit(-1)
-
+    print("-- --")
 
 def main(args = None):
 
