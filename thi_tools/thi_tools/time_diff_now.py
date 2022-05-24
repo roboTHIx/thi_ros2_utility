@@ -4,6 +4,8 @@ import copy
 import rclpy
 from rclpy.node import Node
 
+# import dataclasses
+
 from tf2_msgs.msg import TFMessage
 # from std_msgs.msg import String
 # from geometry_msgs.msg import PointStamped
@@ -19,7 +21,7 @@ from ros2topic.api import get_msg_class
 class TimeDiffHandleTf(object):
   def __init__(self, parent : Node, topic,  max_buffer_size = 10):
     self.parent = parent
-    self.buffer_size = max_buffer_size;
+    self.buffer_size = max_buffer_size
     self.data =  {} #create dict
     
     self.got_data = False
@@ -39,9 +41,9 @@ class TimeDiffHandleTf(object):
       now = self.parent.get_clock().now()
       tmp_diff_sec =  now.to_msg().sec - msg.transforms[i].header.stamp.sec
       tmp_diff_nsec = now.to_msg().nanosec - msg.transforms[i].header.stamp.nanosec
-      print(msg.transforms[i].header.frame_id, '------------')
-      print(msg.transforms[i].header.stamp)
-      print(now.to_msg())
+      # print(msg.transforms[i].header.frame_id, '------------')
+      # print(msg.transforms[i].header.stamp)
+      # print(now.to_msg())
 
       diff_s = tmp_diff_sec + tmp_diff_nsec/1000000000
       # print(len(self.data))

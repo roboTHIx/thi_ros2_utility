@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
           'time_diff_now_node = thi_tools.time_diff_now:main',
-          "map_repub_node = thi_tools.map_repub:main"
+          "map_repub_node = thi_tools.map_repub:main",
+          "img_repub_diff_qos_node = thi_tools.img_repub_diff_qos:main"
         ],
     },
 )
