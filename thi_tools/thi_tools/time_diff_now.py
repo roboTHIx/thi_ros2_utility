@@ -1,5 +1,6 @@
 import sys
 import copy
+import time
 
 import rclpy
 from rclpy.node import Node
@@ -99,7 +100,20 @@ class TimeDiffHandle(object):
     self.topic = copy.deepcopy(topic)
 
     #create subscirber
-    msg_type = get_msg_class(parent, topic, include_hidden_topics=True)
+    msg_type = None
+    for i in range(0,20):
+      msg_type = get_msg_class(parent, topic, include_hidden_topics=True)
+
+      if msg_type is not None:
+        break
+      else:
+        time.sleep(0.5)
+    print('-------')
+    print(msg_type)
+    if msg_type is None:
+      print("++++++++topic: ", topic, "is not valid!!!")
+      self.valid = False
+      return
     self.sub = parent.create_subscription(msg_type, topic, self.msg_callback, 10)
   
   def clear(self):
