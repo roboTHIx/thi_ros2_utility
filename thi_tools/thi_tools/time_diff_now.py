@@ -29,8 +29,8 @@ class TimeDiffHandleTf(object):
     self.topic = copy.deepcopy(topic)
 
     #create subscirber
-    msg_type = get_msg_class(parent, topic, include_hidden_topics=True)
-    self.sub = parent.create_subscription(msg_type, topic, self.msg_callback, 10)
+    # msg_type = get_msg_class(parent, topic, include_hidden_topics=True)
+    self.sub = parent.create_subscription(TFMessage, topic, self.msg_callback, 10)
   
   def clear(self):
     self.parent.destroy_subscription(self.sub)
