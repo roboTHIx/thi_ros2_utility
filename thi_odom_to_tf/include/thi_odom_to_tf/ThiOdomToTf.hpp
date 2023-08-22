@@ -28,6 +28,8 @@ public:
     _tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
     _sub_odom = this->create_subscription<nav_msgs::msg::Odometry>("odom", 10, std::bind(&ThiOdomToTf::sub_odom_callback, this, std::placeholders::_1));
+    //  this->create_publisher<std_msgs::msg::String>("topic", 10);
+    _pub_odom = this->create_publisher<nav_msgs::msg::Odometry>("odom_base", 10);
 
   }
   virtual ~ThiOdomToTf() = default;
@@ -37,9 +39,14 @@ private: //fcn
   {
     // RCLCPP_INFO(_logger, "got odom");
     geometry_msgs::msg::TransformStamped t;
+    auto new_msg = *msg;
+    new_msg.header.frame_id = "odom_base";
+    new_msg.header.stamp = _clock->now();
+    _pub_odom->publish(new_msg);
 
     t.header = msg->header;
-    // t.header.stamp = _clock->now();
+    t.header.frame_id = "odom_base";
+    t.header.stamp = _clock->now();
     t.child_frame_id = msg->child_frame_id;
 
     t.transform.translation.x = msg->pose.pose.position.x;
@@ -62,6 +69,7 @@ private:
   // } _params;
 
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr  _sub_odom;
+  rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr _pub_odom;
   std::unique_ptr<tf2_ros::TransformBroadcaster> _tf_broadcaster;
   
   rclcpp::Logger _logger {rclcpp::get_logger("thi_odom_to_tf_node")};
